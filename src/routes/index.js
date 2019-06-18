@@ -1,12 +1,14 @@
-import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createAppContainer, createStackNavigator } from 'react-navigation';
 
+import Signin from '../pages/Signin';
 import Main from '../pages/Main';
-import Box from '../pages/Box';
+import Subject from '../pages/Subject';
 
 const Routes = createAppContainer(
-  createSwitchNavigator({
+  createStackNavigator({
+    Signin,
     Main,
-    Box,
+    Subject,
   }),
 );
 
