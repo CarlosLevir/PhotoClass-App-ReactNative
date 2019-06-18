@@ -37,6 +37,29 @@ function Subject({ navigation }) {
     setSubject(navigation.getParam('subject'));
   }, []);
 
+  const handleUpload = () => {
+    ImagePicker.showImagePicker({}, async (upload) => {
+      if (upload.error) {
+        console.log('Image picker error');
+      } else if (upload.didCancel) {
+        console.log('Canceled by user');
+      } else {
+        const data = new FormData();
+
+        const [prefix, suffix] = upload.fileName.split('.');
+        const ext = suffix.toLowerCase() === 'heic' ? 'jpg' : suffix;
+
+        data.append('file', {
+          uri: upload.uri,
+          type: upload.type,
+          name: `${prefix}.${ext}`,
+        });
+
+        sendNewFile(subject._id, data);
+      }
+    });
+  };
+
   // eslint-disable-next-line react/prop-types
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -58,29 +81,6 @@ function Subject({ navigation }) {
       </Text>
     </TouchableOpacity>
   );
-
-  const handleUpload = () => {
-    ImagePicker.launchImageLibrary({}, async (upload) => {
-      if (upload.error) {
-        console.log('Image picker error');
-      } else if (upload.didCancel) {
-        console.log('Canceled by user');
-      } else {
-        const data = new FormData();
-
-        const [prefix, suffix] = upload.fileName.split('.');
-        const ext = suffix.toLowerCase() === 'heic' ? 'jpg' : suffix;
-
-        data.append('file', {
-          uri: upload.uri,
-          type: upload.type,
-          name: `${prefix}.${ext}`,
-        });
-
-        sendNewFile(subject._id, data);
-      }
-    });
-  };
 
   return (
     <View style={styles.container}>
