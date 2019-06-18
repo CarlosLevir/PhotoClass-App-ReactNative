@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginTop: 10,
   },
-  button: {
+  buttonSignin: {
     height: 48,
     borderRadius: 4,
     fontSize: 16,
@@ -30,11 +30,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  buttonText: {
+  buttonSignup: {
+    height: 48,
+    fontSize: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonSigninText: {
     fontWeight: 'bold',
     fontSize: 16,
     alignItems: 'center',
     color: '#FFF',
+  },
+  buttonSignupText: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    alignItems: 'center',
+    color: '#7159c1',
   },
 });
 

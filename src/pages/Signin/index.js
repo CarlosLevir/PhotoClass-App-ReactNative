@@ -8,17 +8,22 @@ import styles from './styles';
 
 import logo from '../../assets/images/logo.png';
 
-import { signin, onSignIn } from '../../services/auth';
+import { signin } from '../../services/auth';
+import { onSignIn } from '../../services/auth/utils';
 
 function Signin({ navigation }) {
   const [email, setEmail] = useState('jose@phhh');
   const [password, setPassword] = useState('testeteste');
 
+  const handleSignup = async () => {
+    navigation.navigate('Signup');
+  };
+
   const handleLogin = async () => {
     try {
       const { data } = await signin({ email, password });
 
-      await onSignIn('@Photoclass:box', data.token);
+      await onSignIn(data.token);
 
       navigation.navigate('Main', { subjects: data });
     } catch (err) {
@@ -42,17 +47,22 @@ function Signin({ navigation }) {
       />
       <TextInput
         style={styles.input}
-        placeholder="Crie um box"
+        placeholder="Sua senha"
         placeholderTextColor="#999"
         autoCapitalize="none"
         autoCorrect={false}
         underlineColorAndroid="transparent"
         onChangeText={typedPassword => setPassword(typedPassword)}
         defaultValue={password}
+        secureTextEntry
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
+      <TouchableOpacity style={styles.buttonSignin} onPress={handleLogin}>
+        <Text style={styles.buttonSigninText}>Login</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.buttonSignup} onPress={handleSignup}>
+        <Text style={styles.buttonSignupText}>Criar conta</Text>
       </TouchableOpacity>
     </View>
   );
