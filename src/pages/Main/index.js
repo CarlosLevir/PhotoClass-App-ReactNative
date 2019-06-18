@@ -1,59 +1,56 @@
-import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import {
-  View, Image, TextInput, TouchableOpacity, Text,
+  View, TouchableOpacity, Text, FlatList,
 } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+import { distanceInWords } from 'date-fns';
+import pt from 'date-fns/locale/pt';
 
 import styles from './styles';
 
-import logo from '../../assets/images/logo.png';
-
-import { createBox } from '../../services/box';
-
 function Main({ navigation }) {
-  const [newBoxName, setNewBoxName] = useState('');
-
-  async function verifyBox() {
-    const box = await AsyncStorage.getItem('http://localhost:3333');
-
-    if (box) {
-      navigation.navigate('Box');
-    }
-  }
+  const [subjects, setSubjects] = useState([]);
 
   useEffect(() => {
-    verifyBox();
+    setSubjects(navigation.getParam('subjects').user.subjects);
   }, []);
 
-  const handleCreateBox = async () => {
-    try {
-      const response = await createBox(newBoxName);
-
-      await AsyncStorage.setItem('@Photoclass:box', response.data._id);
-
-      navigation.navigate('Box');
-    } catch (err) {
-      console.log(err);
-    }
+  const showSubjectDetails = (subject) => {
+    navigation.navigate('Subject', { subject });
   };
+
+  // eslint-disable-next-line react/prop-types
+  const renderItem = ({ item }) => (
+    <TouchableOpacity style={styles.file} onPress={() => showSubjectDetails(item)}>
+      <View style={styles.fileInfo}>
+        <Icon name="book" size={24} color="#a5cfff" />
+        <Text style={styles.fileTitle}>{item.title}</Text>
+      </View>
+      <Text style={styles.fileDate}>
+        há
+        {' '}
+        {distanceInWords(item.updatedAt, new Date(), {
+          locale: pt,
+        })}
+      </Text>
+    </TouchableOpacity>
+  );
 
   return (
     <View style={styles.container}>
-      <Image style={styles.logo} source={logo} />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Crie um box"
-        placeholderTextColor="#999"
-        autoCapitalize="none"
-        autoCorrect={false}
-        underlineColorAndroid="transparent"
-        onChangeText={boxName => setNewBoxName(boxName)}
+      <Text style={styles.boxTitle}>Minhas matérias</Text>
+      <FlatList
+        data={subjects}
+        style={styles.list}
+        keyExtractor={file => file._id}
+        ItemSeparatorComponent={() => <View style={styles.separator} />}
+        renderItem={renderItem}
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleCreateBox}>
-        <Text style={styles.buttonText}>Criar</Text>
+      <TouchableOpacity style={styles.fab} onPress={() => {}}>
+        <Icon name="plus-square" size={24} color="#fff" />
       </TouchableOpacity>
     </View>
   );
