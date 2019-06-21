@@ -14,13 +14,11 @@ const UnauthenticatedRoutes = createStackNavigator({
   Signup,
 });
 
-const AuthenticatedRoutes = createStackNavigator(
-  {
-    Main,
-    Subject,
-  },
-  {
-    defaultNavigationOptions: ({ navigation }) => ({
+const AuthenticatedRoutes = createStackNavigator({
+  Main: {
+    screen: Main,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Minhas matérias',
       headerRight: (
         <TouchableOpacity
           style={{ marginRight: 15 }}
@@ -37,7 +35,8 @@ const AuthenticatedRoutes = createStackNavigator(
       ),
     }),
   },
-);
+  Subject,
+});
 
 const Routes = createAppContainer(
   createStackNavigator(
