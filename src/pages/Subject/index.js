@@ -8,6 +8,7 @@ import ImagePicker from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
+import io from 'socket.io-client';
 
 import { distanceInWords } from 'date-fns';
 import pt from 'date-fns/locale/pt';
@@ -17,6 +18,22 @@ import { sendNewFile } from '../../services/subjects';
 
 function Subject({ navigation }) {
   const [subject, setSubject] = useState({});
+
+  const subscribeToNewFiles = () => {
+    const socket = io('http://192.168.3.8:3333');
+
+    socket.emit('connectSubject', navigation.getParam('subject')._id);
+
+    socket.on('newFile', (updatedSubject) => {
+      setSubject(updatedSubject);
+    });
+  };
+
+  useEffect(() => {
+    setSubject(navigation.getParam('subject'));
+
+    subscribeToNewFiles();
+  }, []);
 
   const openFile = async (file) => {
     const filePath = `${RNFS.DocumentDirectoryPath}/${file.title}`;
@@ -32,10 +49,6 @@ function Subject({ navigation }) {
       console.log('Arquivo não suportado');
     }
   };
-
-  useEffect(() => {
-    setSubject(navigation.getParam('subject'));
-  }, []);
 
   const handleUpload = () => {
     ImagePicker.showImagePicker({}, async (upload) => {
@@ -84,7 +97,6 @@ function Subject({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.boxTitle}>{subject.title}</Text>
       <FlatList
         data={subject.files}
         style={styles.list}
@@ -99,6 +111,10 @@ function Subject({ navigation }) {
     </View>
   );
 }
+
+Subject.navigationOptions = ({ navigation }) => ({
+  title: navigation.getParam('subject').title,
+});
 
 Subject.propTypes = {
   navigation: PropTypes.shape({}).isRequired,
