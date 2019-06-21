@@ -1,0 +1,70 @@
+import { StyleSheet } from 'react-native';
+
+const styles = StyleSheet.create({
+  modalWrapper: {
+    backgroundColor: 'rgba(51,51,51,0.6)',
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+  },
+  container: {
+    backgroundColor: 'white',
+    height: 200,
+    width: '80%',
+    alignSelf: 'center',
+    borderRadius: 10,
+    elevation: 8,
+    marginVertical: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    shadowColor: '#9E9EA1',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.6,
+    shadowRadius: 3,
+  },
+  header: {},
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginTop: 10,
+    alignSelf: 'center',
+    color: '#7159c1',
+  },
+  closeModalButton: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    alignSelf: 'flex-end',
+  },
+  input: {
+    height: 48,
+    borderWidth: 1,
+    borderColor: '#DDD',
+    borderRadius: 4,
+    fontSize: 16,
+    paddingHorizontal: 20,
+    marginTop: 30,
+  },
+  button: {
+    height: 48,
+    borderRadius: 4,
+    fontSize: 16,
+    paddingHorizontal: 20,
+    marginTop: 10,
+    backgroundColor: '#7159c1',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    alignItems: 'center',
+    color: '#FFF',
+  },
+});
+
+export default styles;
